@@ -1,2 +1,2 @@
-# 220FinalProject
-Final class project for IGME-220
+# 230FinalProject
+Final class project for IGME-230
