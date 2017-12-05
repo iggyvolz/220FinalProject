@@ -9,8 +9,11 @@ $(function()
     svg.viewbox({x:0, y:0, width:WIDTH, height:HEIGHT});
     // Draw background
     const background = svg.rect(WIDTH,HEIGHT).fill(BACKGROUND_COLOUR);
-    // Draw staff
-    drawStaff(svg, 50,50,100,200,2);
+    // Draw staves until there is no more room
+    for(let i=0;i<4;i++)
+    {
+        drawStaff(svg, 50,50+200*i,WIDTH-100,150,2);
+    }
     // https://stackoverflow.com/a/42711775
     var pt = svg.node.createSVGPoint();
     function localClickCoordinates(e)
