@@ -12,7 +12,7 @@ $(function()
     for(let i=0;i<4;i++)
     {
         // TODO config-ize these
-        drawStaff(svg, 50,50+200*i,WIDTH-100,150,2);
+        drawStaff(svg, 50,50+200*i,WIDTH-100,150,2,"treble");
     }
     // https://stackoverflow.com/a/42711775
     var pt = svg.node.createSVGPoint();
@@ -32,8 +32,9 @@ $(function()
      * @param {int} width Width of the staff
      * @param {int} height Height of the staff
      * @param {int} stroke Line stroke of the staff
+     * @param {string} clef Type of clef to draw (treble/bass/none)
      */
-    function drawStaff(svg, left, top, width, height, stroke)
+    function drawStaff(svg, left, top, width, height, stroke, clef)
     {
         // Draw staff
         // Save the line numbers so we can reference their positions later
@@ -89,5 +90,42 @@ $(function()
                 svg.line(stemX, stemTop, stemX, stemBottom).stroke({width:STEM_STROKE, color: STEM_COLOUR});
             }
         });
+        // Draw the clef
+        switch(clef)
+        {
+            case "treble":
+                // Draw a treble clef
+                // Calculate distance between lines
+                const distanceBetweenLines=lines[1]-lines[0];
+                // Horizontally, start 2/3ds of the way into the clef
+                let x = CLEF_LEFT+CLEF_WIDTH*2/3;
+                // Vertically, start one third of a line length above top, end two thirds of a line length below the bottom
+                svg.line(x,top-distanceBetweenLines/3,x,lines[4]+distanceBetweenLines*2/3).stroke({width:STEM_STROKE, color: STEM_COLOUR});
+                // Now make the curve at the bottom
+                let y = lines[4]+distanceBetweenLines*2/3;
+
+                // X-radius should be 1/3rd of a clef (so that the diameter is 2/3ds of a clef,
+                // taking us from the main stem to the left edge of the clef)
+                const rx=CLEF_WIDTH/3;
+                // Y-radius should be 1/3rd of a line length
+                const ry=distanceBetweenLines/3;
+                const xAxisRotation=0;
+                const largeArcFlag=1; // We want a large arc
+                const sweepFlag=1; // Make arc point down
+                const finalX=CLEF_LEFT; // End at (clef left, current y)
+                const finalY=y;
+                // Move to (x,y) then draw arc
+                const path=`M${x},${y} A${rx},${ry} ${xAxisRotation} ${largeArcFlag},${sweepFlag} ${finalX},${finalY}`;
+                svg.path(path).fill("none").stroke({width:STEM_STROKE, color: STEM_COLOUR});
+                // Draw dot at end of clef
+                svg.ellipse(6,6).move(finalX-3,finalY-3);
+                break;
+            case "bass":
+                break;
+            case "none":
+                break;
+            default:
+                console.warn("Clef "+clef+" not supported");
+        }
     }
 });
