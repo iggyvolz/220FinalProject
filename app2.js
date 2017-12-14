@@ -123,8 +123,9 @@ $(function()
     }
     /**
      * Draws a note on the staff
+     * @returns {object} {destroy}
      */
-    function drawNote(svg, staff, type, x, spot)
+    function drawNote(svg, staff, type, x, spot, colour)
     {
         switch(type)
         {
@@ -135,7 +136,8 @@ $(function()
                 // SVG's move wants the top-left of the rectangle containing the ellipse
                 const ellipseLeft = staff.left + x - ellipseWidth/2;
                 const ellipseTop = staff.top + staff.height*(spot + 1/2)/9-staff.stroke/2-ellipseHeight/2;
-                svg.ellipse(ellipseWidth, ellipseHeight).move(ellipseLeft, ellipseTop);
+                const ellipse = svg.ellipse(ellipseWidth, ellipseHeight).move(ellipseLeft, ellipseTop).fill(colour);
+                let line;
                 // Draw the stem
                 if(spot<=4)
                 {
@@ -144,7 +146,7 @@ $(function()
                     const stemTop = ellipseTop + ellipseHeight/2; // Vertical centre of the ellipse
                     const stemBottom = ellipseTop + ellipseHeight/2 + STEM_HEIGHT;
                     const stemX = ellipseLeft + ellipseWidth*.1; // Put the stem a little into the note so it isn't as obvious
-                    svg.line(stemX, stemTop, stemX, stemBottom).stroke({width:STEM_STROKE, color: STEM_COLOUR});
+                    line = svg.line(stemX, stemTop, stemX, stemBottom).stroke({width:STEM_STROKE, color: colour});
                 }
                 else
                 {
@@ -153,9 +155,18 @@ $(function()
                     const stemTop = ellipseTop + ellipseHeight/2 - STEM_HEIGHT; // Vertical centre of the ellipse
                     const stemBottom = ellipseTop + ellipseHeight/2;
                     const stemX = ellipseLeft + ellipseWidth*.9; // Put the stem a little into the note so it isn't as obvious
-                    svg.line(stemX, stemTop, stemX, stemBottom).stroke({width:STEM_STROKE, color: STEM_COLOUR});
+                    line = svg.line(stemX, stemTop, stemX, stemBottom).stroke({width:STEM_STROKE, color: colour});
                 }
+                destroy=function()
+                {
+                    // Run this function to destroy the note
+                    ellipse.remove();
+                    line.remove();
+                }
+                return {destroy};
                 break;
+            default:
+                console.error("Unknown note");
         }
     }
     /**
@@ -187,7 +198,6 @@ $(function()
         {
             // Get click coordinates relative to the svg
             const clickCoordinates = localClickCoordinates(e);
-            console.log(clickCoordinates);
             // Get coordinates relative to the staff
             clickCoordinates.x-=left;
             clickCoordinates.y-=top;
@@ -200,9 +210,28 @@ $(function()
             // Each line/space has a buffer of 1/9th of the staff, so multiply by 9 and get the floor
             const clickedSpot=Math.floor(clickCoordinates.y/height*9);
             // Place a quarter note at that spot
-            drawNote(svg, staff, "quarter", clickCoordinates.x, clickedSpot);
+            let note = drawNote(svg, staff, "quarter", clickCoordinates.x, clickedSpot, "black");
         });
         // Draw the clef
         drawClef(svg, staff, clef);
+        // Draw grey note at current mouse position
+        let mouseCursor={destroy:function(){}} // Stores the grey note drawn at current position - start with psudo-note that we can destroy without consequence
+        svg.on("mousemove",function(e){
+            // Destroy old mouse cursor
+            mouseCursor.destroy();
+            // Get coordinates of cursor
+            const coords = localClickCoordinates(e);
+            // Get coordinates relative to the staff
+            coords.x-=left;
+            coords.y-=top;
+            if(coords.x<0 || coords.x>width || coords.y<0 || coords.y>height)
+            {
+                // Ignore mouseover, it is not over this staff
+                return;
+            }
+            const clickedSpot=Math.floor(coords.y/height*9);
+            // Place a grey note at that spot
+            mouseCursor = drawNote(svg, staff, "quarter", coords.x, clickedSpot, "grey");
+        });
     }
 });
