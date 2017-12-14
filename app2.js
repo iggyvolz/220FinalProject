@@ -51,6 +51,7 @@ $(function()
         {
             // Get click coordinates relative to the svg
             const clickCoordinates = localClickCoordinates(e);
+            console.log(clickCoordinates);
             // Get coordinates relative to the staff
             clickCoordinates.x-=left;
             clickCoordinates.y-=top;
@@ -98,11 +99,11 @@ $(function()
                 // Calculate distance between lines
                 const distanceBetweenLines=lines[1]-lines[0];
                 // Horizontally, start 2/3ds of the way into the clef
-                let x = CLEF_LEFT+CLEF_WIDTH*2/3;
+                const x = CLEF_LEFT+CLEF_WIDTH*2/3;
                 // Vertically, start one third of a line length above top, end two thirds of a line length below the bottom
                 svg.line(x,top-distanceBetweenLines/3,x,lines[4]+distanceBetweenLines*2/3).stroke({width:STEM_STROKE, color: STEM_COLOUR});
                 // Now make the curve at the bottom
-                let y = lines[4]+distanceBetweenLines*2/3;
+                const y = lines[4]+distanceBetweenLines*2/3;
 
                 // X-radius should be 1/3rd of a clef (so that the diameter is 2/3ds of a clef,
                 // taking us from the main stem to the left edge of the clef)
@@ -119,6 +120,62 @@ $(function()
                 svg.path(path).fill("none").stroke({width:STEM_STROKE, color: STEM_COLOUR});
                 // Draw dot at end of clef
                 svg.ellipse(6,6).move(finalX-3,finalY-3);
+                // Draw arc from above line to D line
+                // Start at last time's final position
+                const x2=x;
+                const y2=lines[0]-distanceBetweenLines/2;
+                const rx2=CLEF_WIDTH*2/3;
+                const ry2=distanceBetweenLines*0.75;
+                const xAxisRotation2=0;
+                const largeArcFlag2=1;
+                const sweepFlag2=1;
+                // End at D line
+                const finalX2 = x2;
+                const finalY2 = lines[1];
+                const path2=`M${x2},${y2} A${rx2},${ry2} ${xAxisRotation2} ${largeArcFlag2},${sweepFlag2} ${finalX2},${finalY2}`;
+                svg.path(path2).fill("none").stroke({width:STEM_STROKE, color: STEM_COLOUR});
+                // Start at same x
+                const x3=x;
+                // End at end of last line
+                const y3=finalY2;
+                const rx3=CLEF_WIDTH*4/3;
+                const ry3=distanceBetweenLines*1.5;
+                const xAxisRotation3=0;
+                const largeArcFlag3=1;
+                const sweepFlag3=0;
+                // End at E line
+                const finalX3 = x2;
+                const finalY3 = lines[4];
+                const path3=`M${x3},${y3} A${rx3},${ry3} ${xAxisRotation3} ${largeArcFlag3},${sweepFlag3} ${finalX3},${finalY3}`;
+                svg.path(path3).fill("none").stroke({width:STEM_STROKE, color: STEM_COLOUR});
+                // Start at same x
+                const x4=x;
+                // End at end of last line
+                const y4=finalY3;
+                const rx4=CLEF_WIDTH*4/3;
+                const ry4=distanceBetweenLines;
+                const xAxisRotation4=0;
+                const largeArcFlag4=1;
+                const sweepFlag4=0;
+                // End at E line
+                const finalX4 = x4;
+                const finalY4 = lines[2];
+                const path4=`M${x4},${y4} A${rx4},${ry4} ${xAxisRotation4} ${largeArcFlag4},${sweepFlag4} ${finalX4},${finalY4}`;
+                svg.path(path4).fill("none").stroke({width:STEM_STROKE, color: STEM_COLOUR});
+                // Start at same x
+                const x5=x;
+                // End at end of last line
+                const y5=lines[2];
+                const rx5=CLEF_WIDTH*2/3;
+                const ry5=distanceBetweenLines/2;
+                const xAxisRotation5=0;
+                const largeArcFlag5=1;
+                const sweepFlag5=0;
+                // End at E line
+                const finalX5 = x;
+                const finalY5 = lines[3];
+                const path5=`M${x5},${y5} A${rx5},${ry5} ${xAxisRotation5} ${largeArcFlag5},${sweepFlag5} ${finalX5},${finalY5}`;
+                svg.path(path5).fill("none").stroke({width:STEM_STROKE, color: STEM_COLOUR});
                 break;
             case "bass":
                 break;
