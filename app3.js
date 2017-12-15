@@ -16,7 +16,6 @@ $(function()
     // Draw staves until there is no more room
     for(let i=0;i<4;i++)
     {
-        // TODO config-ize these
         staves.push(drawStaff(svg, 50,50+200*i,WIDTH-100,150,2,"treble"));
     }
     // https://stackoverflow.com/a/42711775
@@ -132,7 +131,6 @@ $(function()
      */
     function drawNote(svg, staff, type, x, spot, colour)
     {
-        // TODO tons of reused code in this method, make them their own methods
         const parts=[];
         const destroy=function()
         {

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Ryan Volz - Final Project</title>
+        <meta charset="UTF-8">
+        <link href="main.css" rel="stylesheet">
+    </head>
+    <body>
+        <h1 id="title">Ryan Volz - Final Project Notes</h1>
+        <p>For this project, I used <a href="https://svgjs.com">SVG.JS</a> to create an interactive sheet music editor in Javascript.</p>
+        <p>For sound (used in the third app), I used notes recorded by the <a href="http://theremin.music.uiowa.edu/MISpiano.html">University of Iowa Electronic Music Studios Project</a>.</p>
+        <p>In order to complete this project, I had to learn how to use the SVG.JS library.  One of my major first tasks was determining where the note should go on the staff.  This is accomplished in the svg.click callback (line 48 on app1.js).  I had to calculate formulas for how to convert the world's click coordinates to a line or space on the staff (part of which I sourced from Stack Overflow as it required multiplying by inverse matrices).</p>
+        <p>The major challenge for the second app was drawing the treble clef.  SVG.JS's support for closed polygons is great, but it only provides a simple wrapper around native SVG code for complex paths.  As such, I had to read and comprehend <a href="https://www.w3.org/TR/SVG/paths.html#PathData">the PathData documentation</a> in order to construct a path command to SVG for each segment of the treble clef (app2.js, lines 32-112).</p>
+        <p>The major challenge I faced for the third app was playing sound, which required using HTML5 Audio.  Audio files for each note are loaded at the beginning of the page (presumably being loaded by the time the user clicks, or at least with the first few seconds loaded so that they can hear the note).  When a note is to be played (either on adding a note, or pressing space to play the entire piece), app3.js pauses the current note (if any) and plays the new note (starting 1 to 1.5 seconds into the audio, as the note does not start at the beginning of the audio file).</p>
+        <p>I modeled the experience loosely around <a href="https://musescore.org">MuseScore</a>, which is a free music editor that I have used in the past to arrange music.</p>
+        <p>Instructions are only shown on the index page, as the apps themselves are designed to take up as much of the screen as possible.</p>
+    </body>
+</html>

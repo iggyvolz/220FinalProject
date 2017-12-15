@@ -1,0 +1,38 @@
+/* Google fonts */
+@import url('https://fonts.googleapis.com/css?family=Merriweather|Open+Sans');
+body
+{
+    font-family: 'Open Sans', sans-serif;
+}
+#container
+{
+    display:flex;
+}
+#title
+{
+    text-align:center;
+    max-height:10vh;
+    font-family: 'Merriweather', serif;
+}
+.app
+{
+    border: 1px solid black;
+    height: 50vh;
+    flex: 1;
+    position: relative;
+}
+.app div
+{
+    /* Poor man's vertical alignment */
+    top:45%;
+    left:45%;
+    position:absolute;
+}
+#description,#documentation
+{
+    border:1px solid black;
+    height:15vh;
+    margin-top: 2vh;
+    width:100%;
+    text-align:center;
+}

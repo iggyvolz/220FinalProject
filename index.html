@@ -3,14 +3,18 @@
     <head>
         <title>Ryan Volz - Final Project</title>
         <meta charset="UTF-8">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/2.6.3/svg.min.js" integrity="sha256-m8lp1zFjiwV3hqitOEUq7ZbAV6sP1j3NnvUzEhUnGuQ=" crossorigin="anonymous"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-        <script src="app1.config.js"></script>
+        <link href="main.css" rel="stylesheet">
         <script src="main.js"></script>
     </head>
     <body>
-        <div id="app1" class="app" data-desc="A simple sheet music editor - on clicking the page it adds a quarter note at the closest line.">App #1</div>
-        <div id="app2" class="app" data-desc="A slightly more complex version of App #1 - it shows a treble clef on the line, and the note is previewed on hover.">App #2</div>
-        <div id="app3" class="app" data-desc="App #2, however sounds implemented (adding a note plays the sound, and you can press spacebar to hear the whole piece).">App #3</div>
+        <h1 id="title">Ryan Volz - Final Project</h1>
+        <div id="container">
+            <div id="app1" class="app" data-desc="A simple sheet music editor - clicking the music adds a quarter note at the closest line."><div><a href="app1.html">App #1</a></div></div>
+            <div id="app2" class="app" data-desc="A slightly more complex version of App #1 - it shows a treble clef on the staff, and the note is previewed on hover.  In addition, pressing + or - changes the note type (eigth, quarter, half, whole note)"><div><a href="app2.html">App #2</a></div></div>
+            <div id="app3" class="app" data-desc="App #2, however sound is implemented - adding a note plays the sound, and you can press spacebar to hear the whole piece."><div><a href="app3.html">App #3</a></div></div>
+        </div>
+        <div id="description"></div>
+        <div id="documentation"><a href="notes.html">Documentation</a></div>
     </body>
 </html>

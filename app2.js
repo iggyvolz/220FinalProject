@@ -11,7 +11,6 @@ $(function()
     // Draw staves until there is no more room
     for(let i=0;i<4;i++)
     {
-        // TODO config-ize these
         drawStaff(svg, 50,50+200*i,WIDTH-100,150,2,"treble");
     }
     // https://stackoverflow.com/a/42711775
